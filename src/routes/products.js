@@ -5,9 +5,19 @@ const prisma = new PrismaClient();
 
 router.get("/", async (req, res) => {
   try {
-    const categories = await prisma.category.findMany();
     const products = await prisma.product.findMany();
-    res.json({ categories, products });
+    res.json({ products });
+  } catch (error) {
+    res.json({ error: error.message });
+  } finally {
+    await prisma.$disconnect();
+  }
+});
+
+router.get("/categories", async (req, res) => {
+  try {
+    const categories = await prisma.category.findMany();
+    res.json({ categories });
   } catch (error) {
     res.json({ error: error.message });
   } finally {
