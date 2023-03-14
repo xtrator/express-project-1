@@ -3,6 +3,24 @@ const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+router.get("/cart/:idsArr", async (req, res) => {
+  const idsArr = JSON.parse(req.params.idsArr).map((id) => Number(id));
+  try {
+    const products = await prisma.product.findMany({
+      where: {
+        id: {
+          in: idsArr,
+        },
+      },
+    });
+    res.json({ products });
+  } catch (error) {
+    res.json({ error: error.message });
+  } finally {
+    await prisma.$disconnect();
+  }
+});
+
 router.get("/categories", async (req, res) => {
   try {
     const categories = await prisma.category.findMany();
