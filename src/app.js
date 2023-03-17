@@ -11,10 +11,8 @@ app.use(express.json());
 //http://expressjs.com/en/5x/api.html#express.urlencoded
 app.use(express.urlencoded({ extended: false }));
 
-const postRouter = require("./routes/posts");
 const productRouter = require("./routes/products");
 
-app.use("/posts", postRouter);
 app.use("/products", productRouter);
 app.get("/", (req, res, next) => {
   res.send("Welcome to app.");
