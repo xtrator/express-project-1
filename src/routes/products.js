@@ -21,6 +21,25 @@ router.get("/cart/:idsArr", async (req, res) => {
   }
 });
 
+router.get("/search/:keywords", async (req, res) => {
+  let keywords = req.params.keywords;
+  console.log(keywords);
+  try {
+    const products = await prisma.product.findMany({
+      where: {
+        name: {
+          contains: keywords,
+        },
+      },
+    });
+    res.json({ products });
+  } catch (error) {
+    res.json({ error: error.message });
+  } finally {
+    await prisma.$disconnect();
+  }
+});
+
 router.get("/categories", async (req, res) => {
   try {
     const categories = await prisma.category.findMany();
